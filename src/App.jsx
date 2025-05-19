@@ -20,12 +20,24 @@ function App() {
   };
 
   return (
-    <div>
+    <div style={outerWrapperStyle}>
       <Header />
       <ChatWindow messages={messages} />
       <InputArea onSend={handleSend} />
     </div>
   );
 }
+
+const outerWrapperStyle = {
+  width: '100vw',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  padding: '10px',
+  minHeight: '100vh',
+  backgroundColor: '#fff',
+  gap: '24px',
+  boxSizing: 'border-box'
+};
 
 export default App;
