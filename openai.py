@@ -4,7 +4,7 @@
 import os
 import openai
 
-openai.api_key = os.environ[""]
+# openai.api_key = os.environ[""]
 
 # AI 행동 방식 결정(role: system)
 conversation = [{"role": "system", "content": "You are a helpful assistant."}]
