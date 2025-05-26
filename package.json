@@ -1,0 +1,24 @@
+{
+  "name": "cambee",
+  "version": "1.0.0",
+  "description": "내 손 안의 대학 생활 정보, 캠비   대학생을 위한 생활 정보 제공 + 챗봇 + 캘린더 알림 기능이 포함된 앱입니다.",
+  "main": "eslint.config.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "openai": "^4.103.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.4.1",
+    "vite": "^6.3.5"
+  }
+}
