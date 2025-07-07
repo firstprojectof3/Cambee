@@ -1,3 +1,4 @@
+
 # dependencies
 node_modules/
 
@@ -12,3 +13,14 @@ dist/
 
 # logs
 npm-debug.log*
+
+
+node_modules/
+dist/
+.env
+.DS_Store
+*.pyc
+*.pyc
+*.pyc
+*.pyc
+
