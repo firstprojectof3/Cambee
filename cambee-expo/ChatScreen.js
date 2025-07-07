@@ -20,15 +20,29 @@ export default function ChatScreen() {
     setMessages(prev => [...prev, userMessage]);
     setInputText('');
 
-    // 🔁 GPT mock 응답
-    setTimeout(() => {
+    try {
+      const res = await fetch('http://<서버IP>:8000/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          user_id: 'user123',
+          message: inputText
+        })
+      });
+
+      const data = await res.json();
+
       const botMessage = {
         id: Date.now().toString() + '-bot',
         role: 'bot',
-        content: '이건 테스트용 GPT 응답이야! 😊'
+        content: data.summary
       };
+
       setMessages(prev => [...prev, botMessage]);
-    }, 500);
+
+    } catch (error) {
+      console.error('API 호출 실패:', error);
+    }
   };
 
   return (
@@ -58,21 +72,3 @@ export default function ChatScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: { flex: 1 },
-  chatContainer: { padding: 10 },
-  inputContainer: {
-    flexDirection: 'row',
-    padding: 10,
-    borderTopWidth: 1,
-    borderColor: '#ccc'
-  },
-  input: {
-    flex: 1,
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    marginRight: 10
-  }
-});
