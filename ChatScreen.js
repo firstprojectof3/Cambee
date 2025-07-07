@@ -1,10 +1,23 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, FlatList, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  Button,
+  FlatList,
+  StyleSheet,
+  KeyboardAvoidingView,
+  Platform
+} from 'react-native';
 import MessageBubble from './components/MessageBubble';
 
 export default function ChatScreen() {
   const [messages, setMessages] = useState([
-    { id: '1', role: 'bot', content: '안녕! 무엇을 도와줄까?' }
+    {
+      id: 'init',
+      role: 'bot',
+      content: '안녕! 궁금한 거 물어봐줘 😊'
+    }
   ]);
   const [inputText, setInputText] = useState('');
 
@@ -16,36 +29,49 @@ export default function ChatScreen() {
       role: 'user',
       content: inputText
     };
-
     setMessages(prev => [...prev, userMessage]);
+
+    const inputToSend = inputText;
     setInputText('');
 
     try {
-      const res = await fetch('http://<your-fastapi-url>/chat', {
+      const res = await fetch('http://<서버주소>/chat', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: inputText })
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          user_id: "1234",  // ⚠️ 실제 user_id로 수정
+          message: inputToSend
+        })
       });
+
       const data = await res.json();
 
       const botMessage = {
         id: Date.now().toString() + '-bot',
         role: 'bot',
-        content: data.reply
+        content: data.summary
       };
 
       setMessages(prev => [...prev, botMessage]);
-    } catch (error) {
-      console.error('에러:', error);
+    } catch (err) {
+      console.error('에러 발생:', err);
     }
   };
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+    >
       <FlatList
         data={messages}
         keyExtractor={item => item.id}
-        renderItem={({ item }) => <MessageBubble role={item.role} content={item.content} />}
+        renderItem={({ item }) => (
+          <MessageBubble role={item.role} content={item.content} />
+        )}
+        contentContainerStyle={styles.chatContainer}
       />
 
       <View style={styles.inputContainer}>
@@ -57,15 +83,18 @@ export default function ChatScreen() {
         />
         <Button title="전송" onPress={sendMessage} />
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 10 },
+  container: { flex: 1 },
+  chatContainer: {
+    padding: 10
+  },
   inputContainer: {
     flexDirection: 'row',
-    padding: 8,
+    padding: 10,
     borderTopWidth: 1,
     borderColor: '#ccc'
   },
@@ -73,7 +102,8 @@ const styles = StyleSheet.create({
     flex: 1,
     borderWidth: 1,
     borderColor: '#ddd',
-    borderRadius: 5,
-    paddingHorizontal: 10
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    marginRight: 10
   }
 });
