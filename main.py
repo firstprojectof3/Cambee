@@ -1,3 +1,5 @@
+
+
 # main.py
 from fastapi import FastAPI
 from routers import chat, user
@@ -6,6 +8,12 @@ from routers import chat, user
 from database import engine, get_db
 from models import Base
 
+
+# ✅ DB 테이블 생성
+Base.metadata.create_all(bind=engine)
+
+# ✅ FastAPI 앱 생성!
+=======
 # ✅ DB 테이블 생성
 Base.metadata.create_all(bind=engine)
 
@@ -14,6 +22,11 @@ app = FastAPI()
 
 # 라우터 연결
 app.include_router(chat.router, prefix="/api")
+
+
+app.include_router(user.router, prefix="/api")
+
+
 app.include_router(user.router, prefix="/api")
 
 # --- 아래는 AI용 라우팅 (필요하면 주석 해제해서 사용) ---
